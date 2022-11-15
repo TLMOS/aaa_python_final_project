@@ -24,8 +24,8 @@ def cli():
 def order(pizza_type: str, size: str, delivery: bool):
     """Order a pizza."""
     pizza_type = pizza_type.lower()
-    size = Size(PIZZA_SIZES[size])
-    pizza = MENU[pizza_type](size)
+    size_enum = Size(PIZZA_SIZES[size])
+    pizza = MENU[pizza_type](size_enum)
     bake(pizza)
     if delivery:
         deliver(pizza)
