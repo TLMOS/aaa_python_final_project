@@ -66,7 +66,7 @@ class MeatLovers(Pizza):
 
 
 ## Tests
-To start tets run following command:
+To start tests run following command:
 ```console
 $ coverage run -m pytest -v
 ```
