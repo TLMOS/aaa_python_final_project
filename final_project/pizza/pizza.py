@@ -1,8 +1,12 @@
 """Pizza recipes."""
 
+from enum import Enum
 from typing import List
 
-PIZZA_SIZES = ['L', 'XL']
+
+class Size(Enum):
+    L = 1
+    XL = 2
 
 
 class Pizza:
@@ -11,9 +15,7 @@ class Pizza:
     icon = '🍕'
     components: List[str] = []
 
-    def __init__(self, size: str):
-        if size not in PIZZA_SIZES:
-            raise ValueError(f'Unknown pizza size: {size}')
+    def __init__(self, size: Size):
         self.size = size
 
     @classmethod

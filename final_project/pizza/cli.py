@@ -1,13 +1,14 @@
 """Command line interface for pizza ordering."""
 
 import click
-from final_project.pizza.pizza import Pizza, PIZZA_SIZES
+from final_project.pizza.pizza import Pizza, Size
 from final_project.pizza.pizza_processing import bake, pickup, deliver
 
 MENU = {}
 for child in Pizza.__subclasses__():
     MENU[child.__name__.lower()] = child
 PIZZA_TYPES = list(MENU.keys())
+PIZZA_SIZES = {size.name: size.value for size in Size}
 
 
 @click.group()
@@ -19,10 +20,11 @@ def cli():
 @click.option('--delivery', default=False, is_flag=True, help='Deliver pizza.')
 @click.argument('pizza_type', nargs=1,
                 type=click.Choice(PIZZA_TYPES, case_sensitive=False))
-@click.argument('size', nargs=1, type=click.Choice(PIZZA_SIZES))
+@click.argument('size', nargs=1, type=click.Choice(list(PIZZA_SIZES.keys())))
 def order(pizza_type: str, size: str, delivery: bool):
     """Order a pizza."""
     pizza_type = pizza_type.lower()
+    size = Size(PIZZA_SIZES[size])
     pizza = MENU[pizza_type](size)
     bake(pizza)
     if delivery:

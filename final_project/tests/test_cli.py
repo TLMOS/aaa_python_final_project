@@ -1,26 +1,28 @@
+from unittest.mock import patch
 from click.testing import CliRunner
 from final_project.pizza.cli import cli
-from final_project.tests.utils import remove_digits
 
 
-def test_order_pickup():
+@patch('random.randint', side_effect=lambda a, b: 1)
+def test_order_pickup(mocked_randint):
     """Test order command."""
     runner = CliRunner()
     result = runner.invoke(cli, ['order', 'margherita', 'L'])
     assert result.exit_code == 0
-    output_lines = remove_digits(result.output).splitlines()
-    assert '🍳 Приготовили за с!' == output_lines[0]
-    assert '🏠 Забрали за с!' == output_lines[1]
+    output_lines = result.output.splitlines()
+    assert '🍳 Приготовили за 1с!' == output_lines[0]
+    assert '🏠 Забрали за 1с!' == output_lines[1]
 
 
-def test_order_deliver():
+@patch('random.randint', side_effect=lambda a, b: 1)
+def test_order_deliver(mocked_randint):
     """Test order command with delivery flag."""
     runner = CliRunner()
     result = runner.invoke(cli, ['order', 'margherita', 'L', '--delivery'])
     assert result.exit_code == 0
-    output_lines = remove_digits(result.output).splitlines()
-    assert '🍳 Приготовили за с!' == output_lines[0]
-    assert '🛵 Доставили за с!' == output_lines[1]
+    output_lines = result.output.splitlines()
+    assert '🍳 Приготовили за 1с!' == output_lines[0]
+    assert '🛵 Доставили за 1с!' == output_lines[1]
 
 
 def test_order_wrong_pizza_type():
@@ -42,7 +44,7 @@ def test_menu():
     runner = CliRunner()
     result = runner.invoke(cli, ['menu'])
     assert result.exit_code == 0
-    output_lines = remove_digits(result.output).splitlines()
+    output_lines = result.output.splitlines()
     assert '- Margherita 🧀: tomato sauce, mozzarella, tomatoes' \
         == output_lines[0]
     assert '- Pepperoni 🍕: tomato sauce, mozzarella, pepperoni' \
